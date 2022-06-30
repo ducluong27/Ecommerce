@@ -21,7 +21,7 @@ export const ProductsInCart = ({cartProduct,increaseProduct,decreaseProduct,dele
       <div className='col-3 card mb-3 text-center ml-5 mr-1'>
         <div className='product container py-1'>
           <div className='product-img'>
-              <img src={cartProduct.url} alt="product-img" className='img-fluid' style={{width:"130px", height:"130px"}}/>
+              <img src={cartProduct.url} alt="product-img" className='img-fluid' style={{width:"250px", height:"220px"}}/>
           </div>
           <div className='product-text title'>{cartProduct.title}</div>
           <div className='product-text description'>{cartProduct.description}</div>

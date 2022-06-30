@@ -51,6 +51,7 @@ export const Home = () => {
   const AddToCart=(product)=>{
     if(uid!==null){
       Cart=product
+      Cart['idP']=product.ID
       Cart['qty']=1
       Cart['totalPrice']=Cart.qty*Cart.price
       fs.collection('Cart '+uid).doc(product.ID).set(Cart).then(()=>{
@@ -90,7 +91,8 @@ export const Home = () => {
             <Products products={products} AddToCart={AddToCart} searchText={searchText}/>
 
           </div> 
-        </div>:
+        </div>
+        :
         <div className='text-center mt-5'>
           <i className="fa fa-circle-o-notch fa-spin fa-4x fa-fw mb-3"></i>
         </div>

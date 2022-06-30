@@ -18,6 +18,7 @@ export const Order = () => {
             console.log(error.text);
         });
     };
+    console.log(cartProducts);
   return (
     <div>
         <Navbar/>

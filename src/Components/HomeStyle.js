@@ -16,8 +16,8 @@ export const NavLink=styled.li`
 export const HoverProduct=styled.div`
     width: 350px;
     height: auto; 
-    justify-content: center;
-    align-items: center;
+    justify-content: left;
+    align-items: left;
     margin-bottom: 50px;
     transition: all 0.3s ease-in-out;
     padding: 12px;

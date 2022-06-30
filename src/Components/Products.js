@@ -5,7 +5,7 @@ export const Products = ({products,AddToCart,searchText}) => {
 
   let searchProducts = products.filter(product=>product.title.toLowerCase().includes(searchText.toLowerCase()))
   return (
-    products===searchProducts?
+    products.length===searchProducts.length?
     products.map((product)=>
       <Product key={product.ID} product={product} AddToCart={AddToCart}/>
     )
