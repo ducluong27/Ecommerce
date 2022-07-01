@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom';
-import {storage,fs,auth} from '../Config/Config'
+import {storage,fs} from '../Config/Config'
 import { useNavigate } from 'react-router-dom';
 export const FormEdit = () => {
-
     let navigate  = useNavigate();
     const location = useLocation()
     const productEdit=location.state
@@ -37,36 +36,6 @@ export const FormEdit = () => {
         }
     }
 
-    useEffect(()=>{
-        auth.onAuthStateChanged(user=>{
-          if(user){
-            fs.collection('users').doc(user.uid).get().then(snapshot=>{
-              setUser(snapshot.data().FullName);
-            })
-          }
-          else{
-            setUser(null)
-          }
-        })
-      },[])
-    
-      const [cartProducts,setCartProducts]=useState([])
-      useEffect(()=>{
-        auth.onAuthStateChanged(user=>{
-          if(user){
-            fs.collection('Cart ' + user.uid).onSnapshot(snapshot=>{
-              const newCartProduct=snapshot.docs.map((doc)=>({
-                ID:doc.id,
-                ...doc.data()
-              }));
-              setCartProducts(newCartProduct)
-            })
-          }
-          else{
-            console.log("đn");
-          }
-        })
-      },[])
 
     const deleteFromFirebase = (url) => {
         //1.
@@ -75,14 +44,13 @@ export const FormEdit = () => {
         pictureRef.delete()
           .then(() => {
             //3.
-            alert("Picture is deleted successfully!");
+            // alert("Picture is deleted successfully!");
           })
           .catch((err) => {
             console.log(err);
           });
       };
     let editData=productEdit
-    let TempCart
     const handleEditProducts = (e)=>{
         e.preventDefault()
 
@@ -94,7 +62,7 @@ export const FormEdit = () => {
         if(image!=null){
             const uploadTask=storage.ref(`product-images/${image.name}`).put(image);
                 uploadTask.on('state_changed',snapshot=>{
-                    const progress =Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100) 
+                  const  progress =Math.round((snapshot.bytesTransferred/snapshot.totalBytes)*100) 
                     // console.log(progress);
                 },error=>setErrorMsg(error.message),()=>{
                     storage.ref('product-images').child(image.name).getDownloadURL().then(url=>{
@@ -107,16 +75,7 @@ export const FormEdit = () => {
                             }, 1000);
                         })
 
-                        auth.onAuthStateChanged(user=>{
-                            if(user){
-                              fs.collection('Cart '+user.uid).doc(cartProducts.ID).update(TempCart).then(()=>{
-                                // console.log("success");
-                              })
-                            }
-                            else{
-                              console.log("Log in");
-                            }
-                          })
+
                         // deleteFromFirebase(productEdit.url)
                 })
             })
@@ -126,6 +85,9 @@ export const FormEdit = () => {
             editData.url = productEdit.url
             fs.collection('Products').doc(productEdit.ID).update(editData).then(()=>{
                 console.log(editData);
+                setTimeout(() => {
+                  navigate('/editProducts');
+              }, 1000);
             })
         }
         // editData.url = urlImage
